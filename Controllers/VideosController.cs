@@ -31,6 +31,13 @@ public class VideosController : ControllerBase
             await _videoRepository.IncrementViewCount(id);
         }
 
+        if (isRangeRequest &&
+            Request.Headers.TryGetValue("Range", out var rangeHeader) &&
+            rangeHeader.ToString().StartsWith("bytes=0-"))
+        {
+            await _videoRepository.IncrementViewCount(id);
+        }
+
         var streamResult = await _videoService.Stream(id);
         return File(streamResult, "video/mp4", enableRangeProcessing: true);
     }
