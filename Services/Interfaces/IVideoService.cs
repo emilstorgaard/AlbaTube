@@ -6,8 +6,8 @@ namespace AlbaTube.Services.Interfaces;
 public interface IVideoService
 {
     Task<FileStream> Stream(int id);
-    Task<VideoRespDto> GetVideoById(int id);
-    Task<List<VideoRespDto>> GetAllVideosByUserId(int userId);
+    Task<VideoRespDto> GetVideoById(int id, int loggedInUserId);
+    Task<List<VideoRespDto>> GetAllVideosByUserId(int userId, int loggedInUserId);
     string GetThumbnail(string imagePath);
     Task Upload(VideoReqDto videoDto, int userId);
     Task Like(int videoId, int userId);

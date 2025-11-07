@@ -9,6 +9,7 @@ public class VideoRespDto
     public required string VideoPath { get; set; }
     public required string ThumbnailPath { get; set; }
     public int ViewCount { get; set; }
+    public int LikeCount { get; set; }
     public bool IsLiked { get; set; }
     public DateTime CreatedAtUtc { get; set; }
     public DateTime UpdatedAtUtc { get; set; }

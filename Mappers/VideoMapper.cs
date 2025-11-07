@@ -5,7 +5,7 @@ namespace AlbaTube.Mappers;
 
 public static class VideoMapper
 {
-    public static VideoRespDto MapToDto(Video video, bool isLiked)
+    public static VideoRespDto MapToDto(Video video, int likeCount, bool isLiked)
     {
         return new VideoRespDto
         {
@@ -16,6 +16,7 @@ public static class VideoMapper
             VideoPath = video.VideoPath,
             ThumbnailPath = video.ThumbnailPath,
             ViewCount = video.ViewCount,
+            LikeCount = likeCount,
             IsLiked = isLiked,
             CreatedAtUtc = video.CreatedAtUtc,
             UpdatedAtUtc = video.UpdatedAtUtc

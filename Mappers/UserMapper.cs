@@ -5,7 +5,7 @@ namespace AlbaTube.Mappers;
 
 public static class UserMapper
 {
-    public static UserRespDto MapToDto(User user)
+    public static UserRespDto MapToDto(User user, int subscriberCount, bool isSubscribed)
     {
         return new UserRespDto
         {
@@ -13,6 +13,8 @@ public static class UserMapper
             Email = user.Email,
             Username = user.Username,
             ProfileImageParh = user.ProfileImagePath,
+            SubscriberCount = subscriberCount,
+            IsSubscribed = isSubscribed,
             CreatedAtUtc = user.CreatedAtUtc,
             UpdatedAtUtc = user.UpdatedAtUtc
         };

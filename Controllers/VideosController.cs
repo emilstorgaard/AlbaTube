@@ -38,16 +38,16 @@ public class VideosController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<VideoRespDto>> GetVideo(int id)
     {
-        var result = await _videoService.GetVideoById(id);
+        int loggedInUserId = UserHelper.GetUserId(User);
+        var result = await _videoService.GetVideoById(id, loggedInUserId);
         return Ok(result);
     }
 
     [HttpGet("user/{id}")]
     public async Task<ActionResult<List<VideoRespDto>>> GetAllVideosByUserId(int id)
     {
-        int userId = UserHelper.GetUserId(User);
-
-        var result = await _videoService.GetAllVideosByUserId(id);
+        int loggedInUserId = UserHelper.GetUserId(User);
+        var result = await _videoService.GetAllVideosByUserId(id, loggedInUserId);
         return Ok(result);
     }
 

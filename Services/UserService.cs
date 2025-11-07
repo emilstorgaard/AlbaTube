@@ -6,7 +6,6 @@ using AlbaTube.Mappers;
 using AlbaTube.Models;
 using AlbaTube.Repositories.Interfaces;
 using AlbaTube.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlbaTube.Services;
 
@@ -24,21 +23,34 @@ public class UserService : IUserService
         _videoRepository = videoRepository;
     }
 
-    public async Task<List<UserRespDto>> GetAll()
+    public async Task<List<UserRespDto>> GetAll(int loggedInUserId)
     {
         var users = await _userRepository.GetAllUsers();
         if (!users.Any()) throw new NotFoundException("No users found.");
 
-        var userDtos = users.Select(UserMapper.MapToDto).ToList();
+        var userDtos = new List<UserRespDto>();
+
+        foreach (var creator in users)
+        {
+            var subscriberCount = await _userRepository.GetSubscriberCount(creator.Id);
+            var isSubscribed = await _userRepository.IsSubscribedAsync(loggedInUserId, creator.Id);
+            var dto = UserMapper.MapToDto(creator, subscriberCount, isSubscribed);
+            userDtos.Add(dto);
+        }
+
         return userDtos;
     }
 
-    public async Task<UserRespDto> GetUser(int userId)
+    public async Task<UserRespDto> GetUser(int userId, int loggedInUserId)
     {
         var user = await _userRepository.GetUserById(userId);
         if (user == null) throw new NotFoundException("User not found.");
 
-        var userDto = UserMapper.MapToDto(user);
+        var subscriberCount = await _userRepository.GetSubscriberCount(userId);
+
+        var isSubscribed = await _userRepository.IsSubscribedAsync(loggedInUserId, userId);
+
+        var userDto = UserMapper.MapToDto(user, subscriberCount, false);
         return userDto;
     }
 

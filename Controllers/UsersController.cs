@@ -20,17 +20,16 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllUsers()
     {
-        var result = await _userService.GetAll();
+        int loggedInUserId = UserHelper.GetUserId(User);
+        var result = await _userService.GetAll(loggedInUserId);
         return Ok(result);
     }
 
-    [Authorize]
-    [HttpGet("authorized")]
-    public async Task<IActionResult> Get()
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUser(int id)
     {
-        int userId = UserHelper.GetUserId(User);
-
-        var result = await _userService.GetUser(userId);
+        int loggedInUserId = UserHelper.GetUserId(User);
+        var result = await _userService.GetUser(id, loggedInUserId);
         return Ok(result);
     }
 

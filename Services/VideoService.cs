@@ -2,10 +2,10 @@
 using AlbaTube.Dtos.Response;
 using AlbaTube.Exceptions;
 using AlbaTube.Helpers;
+using AlbaTube.Mappers;
 using AlbaTube.Models;
 using AlbaTube.Repositories.Interfaces;
 using AlbaTube.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlbaTube.Services;
 
@@ -38,23 +38,32 @@ public class VideoService : IVideoService
         return fileStream;
     }
 
-    public async Task<VideoRespDto> GetVideoById(int id)
+    public async Task<VideoRespDto> GetVideoById(int id, int loggedInUserId)
     {
         var video = await _videoRepository.GetVideoById(id);
         if (video == null) throw new NotFoundException("Video not found.");
 
-        var videoDto = Mappers.VideoMapper.MapToDto(video, false);
+        var likeCount = await _videoRepository.GetLikeCount(id);
+        var isLiked = await _videoRepository.IsVideoLikedByUser(id, loggedInUserId);
 
+        var videoDto = VideoMapper.MapToDto(video, likeCount, isLiked);
         return videoDto;
     }
 
-    public async Task<List<VideoRespDto>> GetAllVideosByUserId(int userId)
+    public async Task<List<VideoRespDto>> GetAllVideosByUserId(int userId, int loggedInUserId)
     {
         var videos = await _videoRepository.GetVideosByUserId(userId);
+        if (!videos.Any()) throw new NotFoundException("No videos found.");
 
-        var videoDtos = videos.Select(video =>
-            Mappers.VideoMapper.MapToDto(video, false)
-        ).ToList();
+        var videoDtos = new List<VideoRespDto>();
+
+        foreach (var video in videos)
+        {
+            var likeCount = await _videoRepository.GetLikeCount(video.Id);
+            var isLiked = await _videoRepository.IsVideoLikedByUser(video.Id, loggedInUserId);
+            var dto = VideoMapper.MapToDto(video, likeCount, isLiked);
+            videoDtos.Add(dto);
+        }
 
         return videoDtos;
     }

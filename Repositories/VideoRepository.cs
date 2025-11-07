@@ -99,4 +99,9 @@ public class VideoRepository : IVideoRepository
         _dbContext.LikedVideos.RemoveRange(likedVideos);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<int> GetLikeCount(int videoId)
+    {
+        return await _dbContext.LikedVideos.CountAsync(lv => lv.VideoId == videoId);
+    }
 }

@@ -12,6 +12,7 @@ public interface IUserRepository
     Task Delete(User user);
     Task Subscribe(Subscription subscription);
     Task UnSubscribe(Subscription subscription);
-    Task<bool> IsSubscribedAsync(int subscriberId, int creatorId);
+    Task<bool> IsSubscribedAsync(int loggedInUserId, int creatorId);
     Task<Subscription?> GetSubscription(int subscriberId, int creatorId);
+    Task<int> GetSubscriberCount(int userId);
 }

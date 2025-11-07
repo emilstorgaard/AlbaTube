@@ -17,4 +17,5 @@ public interface IVideoRepository
     Task UpdateVideo(Video video);
     Task DeleteVideo(Video video);
     Task DeleteLikedVideos(int userId);
+    Task<int> GetLikeCount(int videoId);
 }

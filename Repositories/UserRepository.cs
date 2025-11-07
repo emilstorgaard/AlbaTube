@@ -58,13 +58,18 @@ public class UserRepository : IUserRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<bool> IsSubscribedAsync(int subscriberId, int creatorId)
+    public async Task<bool> IsSubscribedAsync(int loggedInUserId, int creatorId)
     {
-        return await _dbContext.Subscriptions.AnyAsync(s => s.SubscriberId == subscriberId && s.CreatorId == creatorId);
+        return await _dbContext.Subscriptions.AnyAsync(s => s.SubscriberId == loggedInUserId && s.CreatorId == creatorId);
     }
 
     public async Task<Subscription?> GetSubscription(int subscriberId, int creatorId)
     {
         return await _dbContext.Subscriptions.FirstOrDefaultAsync(s => s.SubscriberId == subscriberId && s.CreatorId == creatorId);
+    }
+
+    public async Task<int> GetSubscriberCount(int userId)
+    {
+        return await _dbContext.Subscriptions.CountAsync(u => u.CreatorId == userId);
     }
 }
