@@ -33,6 +33,15 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
+    [HttpGet("authorized")]
+    public async Task<IActionResult> GetAuthorized()
+    {
+        int userId = UserHelper.GetUserId(User);
+        var result = await _userService.GetUser(userId, userId);
+        return Ok(result);
+    }
+
     [HttpPost("register")]
     public async Task<IActionResult> AddUser([FromForm] UserReqDto userReqDto)
     {
