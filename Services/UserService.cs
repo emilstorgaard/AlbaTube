@@ -57,8 +57,6 @@ public class UserService : IUserService
     public async Task<List<UserRespDto>> GetSubscriptionsById(int loggedInUserId)
     {
         var users = await _userRepository.GetSubscriptionsById(loggedInUserId);
-        if (users == null || !users.Any())
-            throw new NotFoundException("No subscriptions found");
 
         var userDtos = new List<UserRespDto>();
 
