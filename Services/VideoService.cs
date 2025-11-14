@@ -71,7 +71,6 @@ public class VideoService : IVideoService
     public async Task<List<VideoRespDto>> GetAllVideosByUserId(int userId, int loggedInUserId)
     {
         var videos = await _videoRepository.GetVideosByUserId(userId);
-        if (!videos.Any()) throw new NotFoundException("No videos found.");
 
         var videoDtos = new List<VideoRespDto>();
 
