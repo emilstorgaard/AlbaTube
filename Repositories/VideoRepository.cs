@@ -42,6 +42,7 @@ public class VideoRepository : IVideoRepository
         return await _dbContext.Videos
             .AsNoTracking()
             .Where(v => v.UserId == userId)
+            .OrderByDescending(v => v.CreatedAtUtc)
             .ToListAsync();
     }
 
