@@ -7,6 +7,7 @@ public interface IUserService
 {
     Task<List<UserRespDto>> GetAll(int loggedInUserId);
     Task<UserRespDto> GetUser(int userId, int loggedInUserId);
+    Task<List<UserRespDto>> GetSubscriptionsById(int loggedInUserId);
     Task AddUser(UserReqDto userReqDto);
     Task Delete(int userId);
     Task Subscribe(int subscriberId, int creatorId);

@@ -50,8 +50,28 @@ public class UserService : IUserService
 
         var isSubscribed = await _userRepository.IsSubscribedAsync(loggedInUserId, userId);
 
-        var userDto = UserMapper.MapToDto(user, subscriberCount, false);
+        var userDto = UserMapper.MapToDto(user, subscriberCount, isSubscribed);
         return userDto;
+    }
+
+    public async Task<List<UserRespDto>> GetSubscriptionsById(int loggedInUserId)
+    {
+        var users = await _userRepository.GetSubscriptionsById(loggedInUserId);
+        if (users == null || !users.Any())
+            throw new NotFoundException("No subscriptions found");
+
+        var userDtos = new List<UserRespDto>();
+
+        foreach (var user in users)
+        {
+            var subscriberCount = await _userRepository.GetSubscriberCount(user.Id);
+            var isSubscribed = await _userRepository.IsSubscribedAsync(loggedInUserId, user.Id);
+
+            var dto = UserMapper.MapToDto(user, subscriberCount, isSubscribed);
+            userDtos.Add(dto);
+        }
+
+        return userDtos;
     }
 
     public async Task AddUser(UserReqDto userReqDto)

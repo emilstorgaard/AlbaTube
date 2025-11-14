@@ -7,6 +7,7 @@ public interface IVideoService
 {
     Task<FileStream> Stream(int id);
     Task<VideoRespDto> GetVideoById(int id, int loggedInUserId);
+    Task<List<VideoRespDto>> GetPopularVideos(int loggedInUserId);
     Task<List<VideoRespDto>> GetAllVideosByUserId(int userId, int loggedInUserId);
     string GetThumbnail(string imagePath);
     Task Upload(VideoReqDto videoDto, int userId);

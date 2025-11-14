@@ -50,6 +50,24 @@ public class VideoService : IVideoService
         return videoDto;
     }
 
+    public async Task<List<VideoRespDto>> GetPopularVideos(int loggedInUserId)
+    {
+        var videos = await _videoRepository.GetPopularVideos();
+        if (!videos.Any()) throw new NotFoundException("No videos found.");
+
+        var videoDtos = new List<VideoRespDto>();
+
+        foreach (var video in videos)
+        {
+            var likeCount = await _videoRepository.GetLikeCount(video.Id);
+            var isLiked = await _videoRepository.IsVideoLikedByUser(video.Id, loggedInUserId);
+            var dto = VideoMapper.MapToDto(video, likeCount, isLiked);
+            videoDtos.Add(dto);
+        }
+
+        return videoDtos;
+    }
+
     public async Task<List<VideoRespDto>> GetAllVideosByUserId(int userId, int loggedInUserId)
     {
         var videos = await _videoRepository.GetVideosByUserId(userId);

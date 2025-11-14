@@ -6,6 +6,7 @@ public interface IVideoRepository
 {
     Task<Video?> GetVideoById(int id);
     Task IncrementViewCount(int videoId);
+    Task<List<Video>> GetPopularVideos();
     Task<List<Video>> GetVideosByUserId(int userId);
     Task<Video?> GetExsistingVideo(string title);
     Task AddVideo(Video video);

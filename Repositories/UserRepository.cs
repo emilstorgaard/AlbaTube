@@ -34,6 +34,14 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users.FindAsync(id);
     }
 
+    public async Task<List<User>> GetSubscriptionsById(int loggedInUserId)
+    {
+        return await _dbContext.Subscriptions
+            .Where(s => s.SubscriberId == loggedInUserId)
+            .Select(s => s.Creator)
+            .ToListAsync();
+    }
+
     public async Task AddUser(User user)
     {
         await _dbContext.Users.AddAsync(user);

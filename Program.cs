@@ -75,9 +75,11 @@ public class Program
         builder.Services.AddScoped<IVideoService, VideoService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<ISearchService, SearchService>();
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IVideoRepository, VideoRepository>();
+        builder.Services.AddScoped<ISearchRepository, SearchRepository>();
     }
 
     public static void ConfigureAuthentication(WebApplicationBuilder builder)

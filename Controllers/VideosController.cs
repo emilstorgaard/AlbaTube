@@ -50,6 +50,14 @@ public class VideosController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("popular")]
+    public async Task<ActionResult<List<VideoRespDto>>> GetPopularVideos()
+    {
+        int loggedInUserId = UserHelper.GetUserId(User);
+        var result = await _videoService.GetPopularVideos(loggedInUserId);
+        return Ok(result);
+    }
+
     [HttpGet("user/{id}")]
     public async Task<ActionResult<List<VideoRespDto>>> GetAllVideosByUserId(int id)
     {

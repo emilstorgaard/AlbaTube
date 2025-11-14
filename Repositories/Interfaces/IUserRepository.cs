@@ -8,6 +8,7 @@ public interface IUserRepository
     Task<User?> GetUserByEmail(string email);
     Task<User?> GetUserByUsername(string username);
     Task<User?> GetUserById(int id);
+    Task<List<User>> GetSubscriptionsById(int loggedInUserId);
     Task AddUser(User user);
     Task Delete(User user);
     Task Subscribe(Subscription subscription);

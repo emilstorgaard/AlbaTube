@@ -34,6 +34,15 @@ public class UsersController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("subscriptions")]
+    public async Task<IActionResult> GetSubscriptions()
+    {
+        int loggedInUserId = UserHelper.GetUserId(User);
+        var result = await _userService.GetSubscriptionsById(loggedInUserId);
+        return Ok(result);
+    }
+
+    [Authorize]
     [HttpGet("authorized")]
     public async Task<IActionResult> GetAuthorized()
     {

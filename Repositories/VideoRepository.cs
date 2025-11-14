@@ -28,6 +28,15 @@ public class VideoRepository : IVideoRepository
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task<List<Video>> GetPopularVideos()
+    {
+        return await _dbContext.Videos
+            .AsNoTracking()
+            .OrderByDescending(v => v.ViewCount)
+            .Take(20)
+            .ToListAsync();
+    }
+
     public async Task<List<Video>> GetVideosByUserId(int userId)
     {
         return await _dbContext.Videos
