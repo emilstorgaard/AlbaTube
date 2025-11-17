@@ -15,6 +15,7 @@ public static class VideoMapper
             Duration = video.Duration,
             VideoPath = video.VideoPath,
             ThumbnailPath = video.ThumbnailPath,
+            UserId = video.UserId,
             ViewCount = video.ViewCount,
             LikeCount = likeCount,
             IsLiked = isLiked,
